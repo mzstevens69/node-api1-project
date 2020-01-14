@@ -10,7 +10,7 @@ server.use(express.json());
 
 // endpoints
 //GET list of users
-server.get('/users', (req, res) => {
+server.get('api/users', (req, res) => {
   Lor.find()
     .then(lors => {
       console.log("Lors", lors);
@@ -27,7 +27,7 @@ server.get('/users', (req, res) => {
 
 // GET a single user by ID
 
-server.get('/users/:id', (req, res) => {
+server.get('api/users/:id', (req, res) => {
     const id = req.params.id;
     Lor.findById(id)
       .then(lor => {
@@ -45,7 +45,7 @@ server.get('/users/:id', (req, res) => {
     });
   });
  // POST insert(add) a user
- server.post("/users", (req, res) => {
+ server.post("api/users", (req, res) => {
      const {name, bio} = req.body; // added server.use(express.json()) to get this to work.
     //never trust client, validate data will be learning soon
     if (name && bio) {
@@ -66,14 +66,13 @@ server.get('/users/:id', (req, res) => {
     }           
  });
 // DELETE a user
-server.delete("/users/:id", (req, res) => {
+server.delete("api/users/:id", (req, res) => {
     const id = req.params.id;
     Lor.remove(id)
       .then(remove => {
         if (remove) res.status(200).json(remove);
         else
-          res
-            .status(404)
+          res.status(404)
             .json({ message: "The user with the specified ID does not exist." });
       })
       .catch(error =>
@@ -81,7 +80,7 @@ server.delete("/users/:id", (req, res) => {
       );
   });
 // UPDATE a new
-server.put("/users/:id", (req, res) => {
+server.put("api/users/:id", (req, res) => {
     const {id, name, bio} = req.body;
     if(!name || !bio)
         res.status(400).json({
